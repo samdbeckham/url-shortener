@@ -1,48 +1,34 @@
-import sqlite3
-from typing import Union
 from fastapi import FastAPI
 from fastapi.responses import RedirectResponse
+from src.functions.seed_db import seed_db
+from src.functions.get_db import get_db
+from src.functions.fetch_url_details import fetch_url_details
 
 tld = "https://url.beckham.io"
 app = FastAPI()
 
-def get_db():
-    con = sqlite3.connect("tmp.db")
-    cur = con.cursor()
-    return (con, cur)
-
-
-def initialize_db():
-    (con, cur) = get_db()
-    cur.execute("CREATE TABLE urls(alias, url)")
-    cur.execute("INSERT INTO urls VALUES ('testalias1', 'https://google.com')")
-    cur.execute("INSERT INTO urls VALUES ('testalias2', 'https://netflix.com')")
-    con.commit()
-
-def fetch_url_details(alias_id):
-    (con, cur) = get_db()
-    res = cur.execute(f"SELECT alias, url FROM urls WHERE alias = '{alias_id}'")
-    data = res.fetchone()
-    if data is None:
-        # TODO: Better error handling
-        return {"Error": "Notfound"}
-    return data;
-
 @app.get("/test")
 def test():
-    initialize_db()
+    seed_db()
     (con, cur) = get_db();
-    res = cur.execute("SELECT name FROM sqlite_master")
-    return {"test": "success", "alias": res.fetchone()}
+    return {"test": "success"}
 
 @app.get("/{alias_id}", response_class=RedirectResponse, status_code=302)
 def redirect_to_url(alias_id: str):
-    (alias, url) = fetch_url_details(alias_id)
+    data = fetch_url_details(alias_id)
+    if data is None:
+        # TODO: Better error handling
+        return {"Error": "Notfound"}
+    (alias, url) = data
     return url
 
 @app.get("/api/get")
 def read_alias(alias_id: str):
-    (alias, url) = fetch_url_details(alias_id)
+    data = fetch_url_details(alias_id)
+    if data is None:
+        # TODO: Better error handling
+        return {"Error": "Notfound"}
+    (alias, url) = data
     return {"alias": alias, "url": url }
 
 @app.put("/api/shorten")

@@ -33,15 +33,18 @@ def read_alias(alias_id: str):
     if data is None:
         # TODO: Better error handling
         return {"Error": "Notfound"}
-    (alias, url) = data;
 
-    return {"alias": data.alias, "url": url }
+    (alias, url) = data;
+    return {"alias": alias, "url": url }
     # TODO: 302 to the actual URL
 
 @app.put("/api/shorten")
 def shorten_url(alias: str, url: str):
-    # TODO: Validation + auth
-    # TODO: Store the URL in the database
+    # TODO: Validation, sanitization, + auth
+    (con, cur) = get_db()
+    cur.execute(f"INSERT INTO urls VALUES ('{alias}', '{url}')")
+    con.commit()
+
     return {"short_url": f"{tld}/{alias}", "alias": alias, "url": url }
 
 @app.delete("/api/delete")

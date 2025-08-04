@@ -48,10 +48,13 @@ def shorten_url(alias: str, url: str):
     return {"short_url": f"{tld}/{alias}", "alias": alias, "url": url }
 
 @app.delete("/api/delete")
-def delete_url(alias: str):
+def delete_url(alias_id: str):
     # TODO: Validation + auth
-    # TODO: Delete the URL from the database
-    return {"alias": alias}
+    (con,cur) = get_db()
+    cur.execute(f"DELETE FROM urls WHERE alias = '{alias_id}'")
+    con.commit()
+
+    return {"alias": alias_id}
 
 def main():
     print("Hello from url-shortener!")

@@ -1,6 +1,6 @@
 from fastapi import APIRouter
 from fastapi.responses import RedirectResponse
-from ..functions.fetch_url_details import fetch_url_details
+from functions.fetch_url_details import fetch_url_details
 
 router = APIRouter()
 

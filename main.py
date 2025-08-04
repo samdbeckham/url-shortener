@@ -1,8 +1,8 @@
 from fastapi import FastAPI
-from src.functions.seed_db import seed_db
-from src.functions.get_db import get_db
-from src.functions.fetch_url_details import fetch_url_details
-from src.endpoints import (
+from functions.seed_db import seed_db
+from functions.get_db import get_db
+from functions.fetch_url_details import fetch_url_details
+from endpoints import (
     delete_endpoint,
     read_endpoint,
     redirect_endpoint,
@@ -10,7 +10,6 @@ from src.endpoints import (
     test_endpoint,
 )
 
-tld = "https://url.beckham.io"
 api_prefix = "/api"
 app = FastAPI()
 

@@ -1,6 +1,7 @@
 from fastapi import APIRouter
-from ..functions.get_db import get_db
+from functions.get_db import get_db
 
+tld = "https://url.beckham.io"
 router = APIRouter()
 
 @router.put("/shorten")

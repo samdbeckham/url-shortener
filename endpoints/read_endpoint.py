@@ -1,5 +1,5 @@
 from fastapi import APIRouter
-from ..functions.fetch_url_details import fetch_url_details
+from functions.fetch_url_details import fetch_url_details
 
 router = APIRouter()
 

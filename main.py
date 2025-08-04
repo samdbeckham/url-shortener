@@ -29,11 +29,14 @@ def test():
 def read_alias(alias_id: str):
     (con, cur) = get_db()
     res = cur.execute(f"SELECT alias, url FROM urls WHERE alias = '{alias_id}'")
-    (alias, url) = res.fetchone()
-    
-    # TODO: 302 to the actual URL
+    data = res.fetchone()
+    if data is None:
+        # TODO: Better error handling
+        return {"Error": "Notfound"}
+    (alias, url) = data;
 
-    return {"alias": alias, "url": url }
+    return {"alias": data.alias, "url": url }
+    # TODO: 302 to the actual URL
 
 @app.put("/api/shorten")
 def shorten_url(alias: str, url: str):

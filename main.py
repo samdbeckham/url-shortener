@@ -14,7 +14,8 @@ def get_db():
 def initialize_db():
     (con, cur) = get_db()
     cur.execute("CREATE TABLE urls(alias, url)")
-    cur.execute("INSERT INTO urls VALUES ('test', 'https://google.com')")
+    cur.execute("INSERT INTO urls VALUES ('testalias1', 'https://google.com')")
+    cur.execute("INSERT INTO urls VALUES ('testalias2', 'https://netflix.com')")
     con.commit()
 
 @app.get("/test")
@@ -27,7 +28,7 @@ def test():
 @app.get("/{alias_id}")
 def read_alias(alias_id: str):
     (con, cur) = get_db()
-    res = cur.execute("SELECT alias, url FROM urls")
+    res = cur.execute(f"SELECT alias, url FROM urls WHERE alias = '{alias_id}'")
     (alias, url) = res.fetchone()
     
     # TODO: 302 to the actual URL

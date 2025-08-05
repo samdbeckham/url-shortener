@@ -11,7 +11,7 @@ def delete_url(alias: str):
         raise HTTPException(status_code=404, detail="Alias not found")
 
     (con,cur) = get_db()
-    cur.execute(f"DELETE FROM urls WHERE alias = '{alias}'")
+    cur.execute("DELETE FROM urls WHERE alias = ?", (alias,))
     con.commit()
     return {"detail": "Alias deleted"}
 

@@ -17,6 +17,11 @@ class TestE2E:
         assert response.status_code == 200
         assert response.json() == { "status": "healthy" }
 
+    def test_read_all_empty(self):
+        response = client.get("/api/read_all")
+        assert response.status_code == 200
+        assert len(response.json()["aliases"]) == 0
+
     def test_no_redirect(self):
         response = client.get(f"/{ALIAS}")
         assert response.status_code == 404
@@ -33,6 +38,14 @@ class TestE2E:
         assert response.json()['short_url'] == f"https://url.beckham.io/{ALIAS}"
         assert response.json()['alias'] == ALIAS
         assert response.json()['url'] == URL
+
+    def test_read_all_one(self):
+        response = client.get("/api/read_all")
+        first_result = response.json()["aliases"][0]
+        assert response.status_code == 200
+        assert len(response.json()["aliases"]) == 1
+        assert first_result['alias'] == ALIAS
+        assert first_result['url'] == URL
 
     def test_is_found(self):
         response = client.get("/api/read", params={"alias": ALIAS})

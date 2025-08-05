@@ -32,6 +32,11 @@ class TestE2E:
         assert response.status_code == 404
         assert response.json() == { "detail": "Alias not found" }
 
+    def test_shorten_bad_url(self):
+        response = client.put("/api/shorten", params={"alias": ALIAS, "url": "notarealurl"})
+        assert response.status_code == 400
+        assert response.json() == { "detail": "Invalid URL" }
+
     def test_shorten(self):
         response = client.put("/api/shorten", params={"alias": ALIAS, "url": URL})
         assert response.status_code == 200

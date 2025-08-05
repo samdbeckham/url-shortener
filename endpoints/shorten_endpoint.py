@@ -1,3 +1,4 @@
+import validators
 from fastapi import APIRouter, HTTPException
 from fastapi.responses import RedirectResponse
 from functions.fetch_url_details import fetch_url_details
@@ -8,10 +9,13 @@ router = APIRouter()
 
 @router.put("/shorten")
 def shorten_url(alias: str, url: str):
-    # TODO: Validation, sanitization, + auth
+    # TODO: Auth
 
     if fetch_url_details(alias) is not None:
         raise HTTPException(status_code=409, detail="Alias already exists")
+
+    if not validators.url(url):
+        raise HTTPException(status_code=400, detail="Invalid URL")
 
     (con, cur) = get_db()
     cur.execute(f"INSERT INTO urls VALUES ('{alias}', '{url}')")

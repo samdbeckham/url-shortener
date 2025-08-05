@@ -1,3 +1,3 @@
 #!/bin/bash
 
-PYTHONPATH=. uv run pytest tests/
+DATABASE_NAME="test.db" PYTHONPATH=. uv run pytest tests/

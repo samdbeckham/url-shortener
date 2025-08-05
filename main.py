@@ -10,11 +10,10 @@ from endpoints import (
     shorten_endpoint,
 )
 from functions.setup import setup
-from functions.teardown import teardown
 
 api_prefix = "/api"
 app = FastAPI()
-teardown()
+
 setup()
 
 app.include_router(redirect_endpoint.router)
@@ -22,9 +21,3 @@ app.include_router(health_endpoint.router, prefix=api_prefix)
 app.include_router(read_endpoint.router, prefix=api_prefix)
 app.include_router(shorten_endpoint.router, prefix=api_prefix)
 app.include_router(delete_endpoint.router, prefix=api_prefix)
-
-def main():
-    print("Hello from url-shortener!")
-
-if __name__ == "__main__":
-    main()

@@ -1,7 +1,6 @@
-from fastapi import FastAPI
-from functions.seed_db import seed_db
-from functions.get_db import get_db
-from functions.fetch_url_details import fetch_url_details
+from fastapi import FastAPI, Depends
+from functions.setup import setup
+from functions.verify_api_key import verify_api_key
 from endpoints import (
     delete_endpoint,
     health_endpoint,
@@ -10,7 +9,6 @@ from endpoints import (
     redirect_endpoint,
     shorten_endpoint,
 )
-from functions.setup import setup
 
 api_prefix = "/api"
 app = FastAPI()
@@ -18,7 +16,7 @@ app = FastAPI()
 setup()
 
 app.include_router(redirect_endpoint.router)
-app.include_router(health_endpoint.router, prefix=api_prefix)
+app.include_router(health_endpoint.router, prefix=api_prefix, dependencies=[Depends(verify_api_key)])
 app.include_router(read_all_endpoint.router, prefix=api_prefix)
 app.include_router(read_endpoint.router, prefix=api_prefix)
 app.include_router(shorten_endpoint.router, prefix=api_prefix)

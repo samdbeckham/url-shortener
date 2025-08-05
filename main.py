@@ -8,14 +8,16 @@ from endpoints import (
     read_endpoint,
     redirect_endpoint,
     shorten_endpoint,
-    test_endpoint,
 )
+from functions.setup import setup
+from functions.teardown import teardown
 
 api_prefix = "/api"
 app = FastAPI()
+teardown()
+setup()
 
 app.include_router(redirect_endpoint.router)
-app.include_router(test_endpoint.router, prefix=api_prefix)
 app.include_router(health_endpoint.router, prefix=api_prefix)
 app.include_router(read_endpoint.router, prefix=api_prefix)
 app.include_router(shorten_endpoint.router, prefix=api_prefix)

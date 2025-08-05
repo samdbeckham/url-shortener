@@ -9,8 +9,6 @@ router = APIRouter()
 
 @router.put("/shorten")
 def shorten_url(alias: str, url: str):
-    # TODO: Auth
-
     if fetch_url_details(alias) is not None:
         raise HTTPException(status_code=409, detail="Alias already exists")
 

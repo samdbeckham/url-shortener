@@ -7,7 +7,6 @@ router = APIRouter()
 
 @router.delete("/delete")
 def delete_url(alias: str):
-    # TODO: Auth
     if fetch_url_details(alias) is None:
         raise HTTPException(status_code=404, detail="Alias not found")
 

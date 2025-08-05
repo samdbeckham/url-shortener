@@ -18,7 +18,7 @@ def test_no_redirect():
     assert response.json() == { "detail": "Alias not found" }
 
 def test_not_found():
-    response = client.get("/api/read", params={"alias_id": ALIAS})
+    response = client.get("/api/read", params={"alias": ALIAS})
     assert response.status_code == 404
     assert response.json() == { "detail": "Alias not found" }
 
@@ -30,7 +30,7 @@ def test_shorten():
     assert response.json()['url'] == URL
 
 def test_is_found():
-    response = client.get("/api/read", params={"alias_id": ALIAS})
+    response = client.get("/api/read", params={"alias": ALIAS})
     assert response.status_code == 200
     assert response.json()['alias'] == ALIAS
     assert response.json()['url'] == URL
@@ -46,12 +46,12 @@ def test_shorten_override():
     assert response.json() == { "detail": "Alias already exists" }
 
 def test_delete():
-    response = client.delete("/api/delete", params={"alias_id": ALIAS})
+    response = client.delete("/api/delete", params={"alias": ALIAS})
     assert response.status_code == 200
     assert response.json() == { "detail": "Alias deleted" }
 
 def test_not_found_again():
-    response = client.get("/api/read", params={"alias_id": ALIAS})
+    response = client.get("/api/read", params={"alias": ALIAS})
     assert response.status_code == 404
     assert response.json() == { "detail": "Alias not found" }
 
@@ -61,7 +61,7 @@ def test_no_redirect_again():
     assert response.json() == { "detail": "Alias not found" }
 
 def test_double_delete():
-    response = client.delete("/api/delete", params={"alias_id": ALIAS})
+    response = client.delete("/api/delete", params={"alias": ALIAS})
     assert response.status_code == 404
     assert response.json() == { "detail": "Alias not found" }
 

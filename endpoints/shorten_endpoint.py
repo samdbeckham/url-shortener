@@ -2,13 +2,17 @@ import validators
 from fastapi import APIRouter, HTTPException
 from functions.fetch_url_details import fetch_url_details
 from functions.get_db import get_db
+from functions.generate_alias import generate_alias
 
 TLD = "https://url.beckham.io"
 router = APIRouter()
 
 
 @router.put("/shorten")
-def shorten_url(alias: str, url: str):
+def shorten_url(url: str, alias: str = None):
+    if alias is None:
+        alias = generate_alias()
+
     if fetch_url_details(alias) is not None:
         raise HTTPException(status_code=409, detail="Alias already exists")
 

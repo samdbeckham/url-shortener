@@ -4,6 +4,7 @@ from functions.fetch_url_details import fetch_url_details
 
 router = APIRouter()
 
+
 @router.get("/{alias}", response_class=RedirectResponse, status_code=302)
 def redirect_to_url(alias: str):
     data = fetch_url_details(alias)

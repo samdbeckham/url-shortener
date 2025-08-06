@@ -6,8 +6,8 @@ readme = "README.md"
 requires-python = ">=3.13"
 dependencies = [
     "fastapi[standard]>=0.116.1",
-    "pylint>=3.3.7",
     "pytest>=8.4.1",
+    "ruff>=0.12.7",
     "validators>=0.35.0",
 ]
 [tool.pitest.ini_options]

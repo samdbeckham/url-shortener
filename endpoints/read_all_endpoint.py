@@ -3,12 +3,13 @@ from functions.get_db import get_db
 
 router = APIRouter()
 
+
 @router.get("/read_all")
 def read_alias():
     (con, cur) = get_db()
-    res = cur.execute(f"SELECT alias, url FROM urls")
+    res = cur.execute("SELECT alias, url FROM urls")
     data = res.fetchall()
     if data is None:
         raise HTTPException(status_code=500, detail="Unknown server error")
-    aliases = list(map(lambda x: { "alias": x[0], "url": x[1] }, data))
+    aliases = list(map(lambda x: {"alias": x[0], "url": x[1]}, data))
     return {"aliases": aliases}

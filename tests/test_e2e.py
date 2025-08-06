@@ -122,6 +122,14 @@ class TestE2E:
         assert response.json()["url"] == URL
         assert response.json()["visits"] == 5
 
+    def test_shorten_no_alias(self):
+        response = client.put("/api/shorten", params={"url": URL}, headers=auth_headers)
+        alias = response.json()["alias"]
+        assert response.status_code == 200
+        assert len(response.json()["alias"]) == 8
+        assert response.json()["url"] == URL
+        assert response.json()["short_url"] == f"https://url.beckham.io/{alias}"
+
     def test_shorten_override(self):
         response = client.put(
             "/api/shorten", params={"alias": ALIAS, "url": URL}, headers=auth_headers

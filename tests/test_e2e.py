@@ -97,17 +97,30 @@ class TestE2E:
         assert len(response.json()["aliases"]) == 1
         assert first_result["alias"] == ALIAS
         assert first_result["url"] == URL
+        assert first_result["visits"] == 0
+
+    def test_redirect(self):
+        response = client.get(f"{ALIAS}")
+        assert response.status_code == 302
+        assert response.headers["location"] == URL
 
     def test_is_found(self):
         response = client.get("/api/read", params={"alias": ALIAS})
         assert response.status_code == 200
         assert response.json()["alias"] == ALIAS
         assert response.json()["url"] == URL
+        assert response.json()["visits"] == 1
 
-    def test_redirect(self):
-        response = client.get(f"{ALIAS}")
-        assert response.status_code == 302
-        assert response.headers["location"] == URL
+    def test_multiple_visits(self):
+        client.get(f"{ALIAS}")
+        client.get(f"{ALIAS}")
+        client.get(f"{ALIAS}")
+        client.get(f"{ALIAS}")
+        response = client.get("/api/read", params={"alias": ALIAS})
+        assert response.status_code == 200
+        assert response.json()["alias"] == ALIAS
+        assert response.json()["url"] == URL
+        assert response.json()["visits"] == 5
 
     def test_shorten_override(self):
         response = client.put(

@@ -16,6 +16,6 @@ def shorten_url(alias: str, url: str):
         raise HTTPException(status_code=400, detail="Invalid URL")
 
     (con, cur) = get_db()
-    cur.execute("INSERT INTO urls VALUES (?, ?)", (alias, url))
+    cur.execute("INSERT INTO urls VALUES (?, ?, 0)", (alias, url))
     con.commit()
     return {"short_url": f"{TLD}/{alias}", "alias": alias, "url": url}

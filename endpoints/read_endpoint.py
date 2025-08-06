@@ -9,5 +9,5 @@ def read_alias(alias: str):
     data = fetch_url_details(alias)
     if data is None:
         raise HTTPException(status_code=404, detail="Alias not found")
-    (_, url) = data
-    return {"alias": alias, "url": url}
+    (_, url, visits) = data
+    return {"alias": alias, "url": url, "visits": visits}

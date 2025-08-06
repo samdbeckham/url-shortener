@@ -10,5 +10,5 @@ def redirect_to_url(alias: str):
     data = fetch_url_details(alias)
     if data is None:
         raise HTTPException(status_code=404, detail="Alias not found")
-    (_, url) = data
+    url = data[1]
     return url
